@@ -1,0 +1,45 @@
+{
+  "updated": "2026-09-30",
+  "teams": [
+    {
+      "team": "platform",
+      "lead": "Amira Okafor",
+      "channel": "#platform-help"
+    },
+    {
+      "team": "payments",
+      "lead": "Jonas Lindqvist",
+      "channel": "#payments-eng"
+    },
+    {
+      "team": "growth",
+      "lead": "Priya Raman",
+      "channel": "#growth-eng"
+    },
+    {
+      "team": "data",
+      "lead": "Tomas Herrera",
+      "channel": "#data-eng"
+    },
+    {
+      "team": "finance-systems",
+      "lead": "Lena Fischer",
+      "channel": "#finsys"
+    },
+    {
+      "team": "security",
+      "lead": "Kofi Mensah",
+      "channel": "#security"
+    },
+    {
+      "team": "hr",
+      "lead": "Marta Kowalska",
+      "channel": "#people-ops"
+    },
+    {
+      "team": "finance",
+      "lead": "Daniel Costa",
+      "channel": "#finance"
+    }
+  ]
+}

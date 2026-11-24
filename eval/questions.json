@@ -1,0 +1,351 @@
+[
+ {
+  "q": "How many days of paid time off do I get per year?",
+  "role": "employee",
+  "expect": [
+   "hb-pto"
+  ],
+  "tag": "policy"
+ },
+ {
+  "q": "Can I carry over unused vacation days into next year?",
+  "role": "employee",
+  "expect": [
+   "hb-pto"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "Can I work from another country for a few weeks?",
+  "role": "employee",
+  "expect": [
+   "hb-remote-work"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "How do I get reimbursed for a client dinner?",
+  "role": "employee",
+  "expect": [
+   "hb-expenses"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "How long do I have to submit receipts?",
+  "role": "employee",
+  "expect": [
+   "hb-expenses"
+  ],
+  "tag": "policy"
+ },
+ {
+  "q": "The primary on-call did not answer the page, when does it escalate?",
+  "role": "employee",
+  "expect": [
+   "hb-oncall-policy",
+   "rb-incident-response"
+  ],
+  "tag": "conflict"
+ },
+ {
+  "q": "Do I need a VPN to reach internal dashboards?",
+  "role": "employee",
+  "expect": [
+   "hb-vpn-2025"
+  ],
+  "tag": "superseded"
+ },
+ {
+  "q": "How long do access proxy sessions last before they expire?",
+  "role": "employee",
+  "expect": [
+   "hb-vpn-2025"
+  ],
+  "tag": "superseded"
+ },
+ {
+  "q": "Who owns billing-api?",
+  "role": "employee",
+  "expect": [
+   "ownership-services",
+   "svc-billing-api"
+  ],
+  "tag": "ownership"
+ },
+ {
+  "q": "Which team is responsible for the search indexer?",
+  "role": "employee",
+  "expect": [
+   "ownership-services",
+   "svc-search-indexer"
+  ],
+  "tag": "ownership"
+ },
+ {
+  "q": "Logins are slow because the session store keeps evicting keys, what do I do?",
+  "role": "employee",
+  "expect": [
+   "rb-auth-gateway",
+   "svc-auth-gateway"
+  ],
+  "tag": "runbook"
+ },
+ {
+  "q": "How do I fail over the database when the primary is unreachable?",
+  "role": "employee",
+  "expect": [
+   "rb-database-failover"
+  ],
+  "tag": "runbook"
+ },
+ {
+  "q": "When do TLS certificates get rotated?",
+  "role": "employee",
+  "expect": [
+   "rb-certificate-rotation"
+  ],
+  "tag": "runbook"
+ },
+ {
+  "q": "Why did we stop running our own message broker for async jobs?",
+  "role": "employee",
+  "expect": [
+   "adr-0006-managed-streaming"
+  ],
+  "tag": "superseded"
+ },
+ {
+  "q": "How are our public APIs versioned?",
+  "role": "employee",
+  "expect": [
+   "adr-0003-api-versioning"
+  ],
+  "tag": "adr"
+ },
+ {
+  "q": "Why is Postgres the default datastore?",
+  "role": "employee",
+  "expect": [
+   "adr-0001-postgres"
+  ],
+  "tag": "adr"
+ },
+ {
+  "q": "Can I ship a change to a tier-1 service on a Friday?",
+  "role": "employee",
+  "expect": [
+   "hb-engineering-handbook"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "How many approving reviews does a change to a critical service need?",
+  "role": "employee",
+  "expect": [
+   "hb-engineering-handbook"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "What happens to the office in late December?",
+  "role": "employee",
+  "expect": [
+   "hb-holidays"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "What should I do during my first week at the company?",
+  "role": "employee",
+  "expect": [
+   "hb-onboarding"
+  ],
+  "tag": "policy"
+ },
+ {
+  "q": "I lost my work laptop, what should I do?",
+  "role": "employee",
+  "expect": [
+   "hb-security-awareness"
+  ],
+  "tag": "paraphrase"
+ },
+ {
+  "q": "How big is the monitor stipend and how often can I claim it?",
+  "role": "employee",
+  "expect": [
+   "hb-remote-work"
+  ],
+  "tag": "policy"
+ },
+ {
+  "q": "Invoice generation is stalling, what is the likely cause?",
+  "role": "employee",
+  "expect": [
+   "rb-billing-api",
+   "svc-billing-api"
+  ],
+  "tag": "runbook"
+ },
+ {
+  "q": "Customers are getting duplicate emails after workers restart",
+  "role": "employee",
+  "expect": [
+   "rb-notification-svc",
+   "svc-notification-svc"
+  ],
+  "tag": "runbook"
+ },
+ {
+  "q": "How do I reserve the staging environment?",
+  "role": "employee",
+  "expect": [
+   "hb-staging-guide"
+  ],
+  "tag": "stale"
+ },
+ {
+  "q": "What is the salary band for a level 4 engineer?",
+  "role": "hr",
+  "expect": [
+   "hr-compensation-bands"
+  ],
+  "tag": "restricted-allowed"
+ },
+ {
+  "q": "What is the salary band for a level 4 engineer?",
+  "role": "employee",
+  "expect": [],
+  "forbid": [
+   "hr-compensation-bands"
+  ],
+  "tag": "restricted-denied"
+ },
+ {
+  "q": "What were the penetration test findings this year?",
+  "role": "security",
+  "expect": [
+   "sec-pentest-findings"
+  ],
+  "tag": "restricted-allowed"
+ },
+ {
+  "q": "What were the penetration test findings this year?",
+  "role": "employee",
+  "expect": [],
+  "forbid": [
+   "sec-pentest-findings"
+  ],
+  "tag": "restricted-denied"
+ },
+ {
+  "q": "At what risk score are card payments held for manual review?",
+  "role": "payments",
+  "expect": [
+   "pay-fraud-rules"
+  ],
+  "tag": "restricted-allowed"
+ },
+ {
+  "q": "At what risk score are card payments held for manual review?",
+  "role": "growth",
+  "expect": [],
+  "forbid": [
+   "pay-fraud-rules"
+  ],
+  "tag": "restricted-denied"
+ },
+ {
+  "q": "How much runway does the company have?",
+  "role": "platform",
+  "expect": [],
+  "forbid": [
+   "fin-board-financials-q3"
+  ],
+  "tag": "restricted-denied"
+ },
+ {
+  "q": "How was the leaked credential in a build log handled?",
+  "role": "platform",
+  "expect": [
+   "sec-postmortem-leaked-credential"
+  ],
+  "tag": "restricted-allowed"
+ },
+ {
+  "q": "Month-end report exports are timing out",
+  "role": "employee",
+  "expect": [
+   "rb-report-exporter",
+   "svc-report-exporter"
+  ],
+  "tag": "runbook"
+ },
+ {
+  "q": "Am I allowed to expense a business class plane ticket?",
+  "role": "employee",
+  "expect": [
+   "hb-expenses"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "Someone stole my phone, who needs to know and how quickly?",
+  "role": "employee",
+  "expect": [
+   "hb-security-awareness"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "How many weeks a year can I be based overseas?",
+  "role": "employee",
+  "expect": [
+   "hb-remote-work"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "The site keeps serving an old bundle after we released",
+  "role": "employee",
+  "expect": [
+   "rb-web-frontend",
+   "svc-web-frontend"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "What happens to a card payment that looks risky?",
+  "role": "payments",
+  "expect": [
+   "pay-fraud-rules"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "How fast does security respond to a report of a suspicious email?",
+  "role": "employee",
+  "expect": [
+   "hb-security-awareness"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "Do we get time back after carrying the pager for a week?",
+  "role": "employee",
+  "expect": [
+   "hb-oncall-policy"
+  ],
+  "tag": "hard-paraphrase"
+ },
+ {
+  "q": "Is it OK to pay a hotel 200 a night?",
+  "role": "employee",
+  "expect": [
+   "hb-expenses",
+   "hb-expenses-travel-2023"
+  ],
+  "tag": "hard-paraphrase"
+ }
+]

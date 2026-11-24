@@ -1,0 +1,9 @@
+service,owning_team,oncall_alias,channel,tier,updated
+billing-api,payments,payments-oncall,#payments-eng,1,2026-09-30
+payments-ledger,payments,payments-oncall,#payments-eng,1,2026-09-30
+auth-gateway,platform,platform-oncall,#platform-help,1,2026-09-30
+notification-svc,growth,growth-oncall,#growth-eng,2,2026-09-30
+search-indexer,data,data-oncall,#data-eng,2,2026-09-30
+data-pipeline,data,data-oncall,#data-eng,2,2026-09-30
+web-frontend,growth,growth-oncall,#growth-eng,2,2026-09-30
+report-exporter,finance-systems,finsys-oncall,#finsys,3,2025-02-17

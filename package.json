@@ -1,0 +1,24 @@
+{
+  "name": "internal-context-mcp",
+  "version": "0.1.0",
+  "description": "Permission-aware, source-attributed internal context over MCP, with a generic HTTP endpoint. Fully offline.",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "bin": { "context-mcp": "dist/src/cli.js" },
+  "scripts": {
+    "build": "tsc -p .",
+    "generate-kb": "node scripts/generate-kb.mjs",
+    "test": "npm run build && node --test dist/test/*.test.js",
+    "eval": "npm run build && node dist/src/cli.js eval",
+    "mcp": "node dist/src/cli.js mcp",
+    "http": "node dist/src/cli.js serve-http"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "typescript": "^5.4.0"
+  }
+}
