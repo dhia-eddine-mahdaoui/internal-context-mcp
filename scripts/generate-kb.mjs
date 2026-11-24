@@ -362,4 +362,5 @@ writeFileSync(join(root, 'ownership', 'teams.json'), JSON.stringify({
     { team: 'finance', lead: 'Daniel Costa', channel: '#finance' },
   ],
 }, null, 2) + '\n');
-console.log(`generated ${count} markdown docs + 2 ownership files in kb/`);
+const extra = (await import("./generate-extra.mjs")).generateExtra(root);
+console.log(`generated ${count} markdown docs + 2 ownership files + ${extra.tickets} tickets + ${extra.threads} chat threads in kb/`);

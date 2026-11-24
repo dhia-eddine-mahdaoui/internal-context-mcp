@@ -1,0 +1,91 @@
+{
+  "project": "PLAT",
+  "tickets": [
+    {
+      "key": "PLAT-176",
+      "title": "Access proxy sessions drop after a workday",
+      "status": "resolved",
+      "updated": "2026-06-12",
+      "reporter": "dana",
+      "assignee": "amira",
+      "description": "Several people were signed out of the access proxy in the middle of the afternoon and had to repeat the device-posture check.",
+      "comments": [
+        {
+          "author": "amira",
+          "ts": "2026-06-12T10:20:00Z",
+          "text": "Working as designed: access proxy sessions expire after 8 hours and then require a fresh device-posture check. Added a note to the VPN replacement guide."
+        }
+      ]
+    },
+    {
+      "key": "PLAT-198",
+      "title": "Remote access sessions expire too early",
+      "status": "closed",
+      "updated": "2026-06-20",
+      "reporter": "ravi",
+      "assignee": "amira",
+      "duplicate_of": "PLAT-176",
+      "description": "Remote access keeps asking me to sign in again during the afternoon.",
+      "comments": [
+        {
+          "author": "amira",
+          "ts": "2026-06-20T08:05:00Z",
+          "text": "Duplicate of PLAT-176."
+        }
+      ]
+    },
+    {
+      "key": "PLAT-212",
+      "title": "Session store evicts keys under memory pressure",
+      "status": "resolved",
+      "updated": "2026-07-21",
+      "reporter": "sofia",
+      "assignee": "amira",
+      "description": "Login latency spiked twice this week. The auth-gateway session store evicted live sessions when memory was tight, so users were asked to sign in again.",
+      "comments": [
+        {
+          "author": "amira",
+          "ts": "2026-07-19T14:00:00Z",
+          "text": "Root cause: the eviction policy removed live sessions first. Switched to evicting only keys with an expiry and raised the memory limit."
+        },
+        {
+          "author": "amira",
+          "ts": "2026-07-21T09:30:00Z",
+          "text": "Login p95 is back under 400 ms. Closing."
+        }
+      ]
+    },
+    {
+      "key": "PLAT-230",
+      "title": "Renew edge certificates earlier",
+      "status": "open",
+      "updated": "2026-10-08",
+      "reporter": "amira",
+      "assignee": "amira",
+      "description": "Two edge certificates were renewed late because the renewal job ran during a deploy freeze. We want more margin before expiry.",
+      "comments": [
+        {
+          "author": "amira",
+          "ts": "2026-10-08T11:00:00Z",
+          "text": "Proposal agreed in the platform sync: public certificates should rotate automatically 21 days before expiry instead of waiting for the old window. The runbook still needs updating."
+        }
+      ]
+    },
+    {
+      "key": "PLAT-244",
+      "title": "Staging environment reset keeps failing",
+      "status": "open",
+      "updated": "2026-10-22",
+      "reporter": "noor",
+      "assignee": "ravi",
+      "description": "The weekly staging reset fails when the data refresh job is still running. Developers lose their test data on the next deploy.",
+      "comments": [
+        {
+          "author": "ravi",
+          "ts": "2026-10-22T16:45:00Z",
+          "text": "Reproduced. The reset should wait for the refresh job; patch is in review."
+        }
+      ]
+    }
+  ]
+}

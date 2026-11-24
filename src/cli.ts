@@ -8,6 +8,7 @@ import { createMcpServer, errorPayload } from './mcp.js';
 import { createHttpServer } from './http.js';
 import { loadQuestions, runEval } from './eval.js';
 import { ROLES, Role } from './types.js';
+import { DEFAULT_CALLERS, IdentityStore, generateIdentities, writeIdentityConfig } from './identity.js';
 
 const pkgRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -28,7 +29,8 @@ const HELP = `context-mcp <command> [options]
 
 Commands
   mcp                          run the MCP server over stdio
-  serve-http                   run the JSON endpoint (--port 8787 --host localhost)
+  serve-http                   run the JSON endpoint (--port 8787 --host localhost [--inspector])
+  identity init --out <file>   create an identity config with fresh caller keys (keys are printed once; only hashes are stored)
   reindex [--watch]            incremental re-index (--watch polls for changes)
   tools                        print tool names and schemas
   call <tool> '<json args>'    call a tool once and print the result
@@ -38,12 +40,14 @@ Commands
 Options
   --kb <dir>      knowledge base directory (env CONTEXT_KB_DIR, default ./kb)
   --cache <file>  index cache file (env CONTEXT_CACHE, default ./.context-index/index.json)
-  --role <role>   caller role; on mcp/serve-http this LOCKS the role (env CONTEXT_CALLER_ROLE)
+  --identities <file>  identity config (env CONTEXT_IDENTITIES). serve-http: bearer key -> caller + role. mcp: use with --as
+  --as <id>       caller id for the stdio server (env CONTEXT_CALLER_ID), looked up in the identity config
+  --role <role>   local-development fallback: lock the role without identities (env CONTEXT_CALLER_ROLE)
   --audit <file>  append a JSON line per call (env CONTEXT_AUDIT_LOG)
   --now <date>    reference date for freshness (env CONTEXT_NOW), for reproducible runs
 
 Roles: ${ROLES.join(', ')}
-HTTP: set CONTEXT_HTTP_AUTH to require "Authorization: Bearer <value>" (mandatory off loopback).`;
+HTTP: with --identities every call needs "Authorization: Bearer <caller key>" (mandatory off loopback).`;
 
 async function main() {
   const { pos, flags } = parse(process.argv.slice(2));
@@ -55,13 +59,28 @@ async function main() {
   if (roleArg && !ROLES.includes(roleArg as Role)) throw new Error(`Unknown role "${roleArg}". Use one of: ${ROLES.join(', ')}`);
   const nowStr = flags.now ?? process.env.CONTEXT_NOW;
   const now = () => (nowStr ? new Date(nowStr) : new Date());
+  const identitiesPath = flags.identities ?? process.env.CONTEXT_IDENTITIES;
+  if (cmd === 'identity') {
+    if (pos[1] !== 'init') throw new Error('Usage: identity init --out <file>');
+    const out = resolve(flags.out ?? 'identities.local.json');
+    const { config, keys } = generateIdentities(DEFAULT_CALLERS);
+    writeIdentityConfig(out, config);
+    console.log(JSON.stringify({ written: 'identity config (hashes only)', callers: config.callers.map(c => ({ id: c.id, role: c.role, caller_key: keys[c.id] })) }, null, 2));
+    console.error('Caller keys are shown once and are not stored; keep this output out of version control.');
+    return;
+  }
+  const identities = identitiesPath ? IdentityStore.load(resolve(identitiesPath)) : undefined;
   const index = new ContextIndex(kb, cache);
   const mk = (locked: boolean) => createContext(index, { now, auditLog: flags.audit ?? process.env.CONTEXT_AUDIT_LOG, ...(locked && roleArg ? { lockedRole: roleArg as Role } : { defaultRole: (roleArg as Role) ?? 'employee' }) });
 
   switch (cmd) {
     case 'mcp': {
       index.reindex();
-      const server = createMcpServer(mk(true));
+      const asId = flags.as ?? process.env.CONTEXT_CALLER_ID;
+      if (identities && !asId) throw new Error('--identities needs --as <caller id> for the stdio server.');
+      const caller = identities && asId ? identities.byId(asId) : undefined;
+      if (identities && asId && !caller) throw new Error(`Unknown caller id "${asId}".`);
+      const server = createMcpServer(mk(true), caller ?? undefined);
       await server.connect(new StdioServerTransport());
       console.error(`context-mcp: serving ${index.docs.size} documents over stdio`);
       return;
@@ -70,9 +89,8 @@ async function main() {
       index.reindex();
       const host = flags.host ?? 'localhost';
       const port = Number(flags.port ?? 8787);
-      const auth = process.env.CONTEXT_HTTP_AUTH;
-      if (!['localhost', '::1'].includes(host) && !host.startsWith('127.') && !auth) throw new Error('Refusing to bind a non-loopback host without CONTEXT_HTTP_AUTH set.');
-      const server = createHttpServer(mk(true), { auth });
+      if (!['localhost', '::1'].includes(host) && !host.startsWith('127.') && !identities) throw new Error('Refusing to bind a non-loopback host without --identities.');
+      const server = createHttpServer(mk(true), { identities, inspector: flags.inspector === 'true' });
       server.listen(port, host, () => console.error(`context-mcp: http endpoint on ${host}:${port} (${index.docs.size} documents)`));
       return;
     }

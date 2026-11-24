@@ -1,0 +1,4 @@
+{"channel":"#growth-eng"}
+{"ts":"2026-10-02T13:10:00Z","user":"priya","thread":"t1","text":"Customers got double emails again after the worker restart."}
+{"ts":"2026-10-02T13:25:00Z","user":"leo","thread":"t1","text":"Known issue with notification-svc: restarts mid-batch resend unless a dedupe key is set. Workaround for now is to drain the queue before restarting."}
+{"ts":"2026-09-10T09:00:00Z","user":"priya","thread":"t2","text":"Reminder that notification-svc is owned by growth since the Q3 handoff, so page growth-oncall, not platform."}

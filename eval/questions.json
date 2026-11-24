@@ -5,7 +5,8 @@
   "expect": [
    "hb-pto"
   ],
-  "tag": "policy"
+  "tag": "policy",
+  "split": "dev"
  },
  {
   "q": "Can I carry over unused vacation days into next year?",
@@ -13,7 +14,8 @@
   "expect": [
    "hb-pto"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "test"
  },
  {
   "q": "Can I work from another country for a few weeks?",
@@ -21,7 +23,8 @@
   "expect": [
    "hb-remote-work"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "dev"
  },
  {
   "q": "How do I get reimbursed for a client dinner?",
@@ -29,7 +32,8 @@
   "expect": [
    "hb-expenses"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "test"
  },
  {
   "q": "How long do I have to submit receipts?",
@@ -37,7 +41,8 @@
   "expect": [
    "hb-expenses"
   ],
-  "tag": "policy"
+  "tag": "policy",
+  "split": "dev"
  },
  {
   "q": "The primary on-call did not answer the page, when does it escalate?",
@@ -46,7 +51,8 @@
    "hb-oncall-policy",
    "rb-incident-response"
   ],
-  "tag": "conflict"
+  "tag": "conflict",
+  "split": "test"
  },
  {
   "q": "Do I need a VPN to reach internal dashboards?",
@@ -54,7 +60,8 @@
   "expect": [
    "hb-vpn-2025"
   ],
-  "tag": "superseded"
+  "tag": "superseded",
+  "split": "dev"
  },
  {
   "q": "How long do access proxy sessions last before they expire?",
@@ -62,7 +69,8 @@
   "expect": [
    "hb-vpn-2025"
   ],
-  "tag": "superseded"
+  "tag": "superseded",
+  "split": "test"
  },
  {
   "q": "Who owns billing-api?",
@@ -71,7 +79,8 @@
    "ownership-services",
    "svc-billing-api"
   ],
-  "tag": "ownership"
+  "tag": "ownership",
+  "split": "dev"
  },
  {
   "q": "Which team is responsible for the search indexer?",
@@ -80,7 +89,8 @@
    "ownership-services",
    "svc-search-indexer"
   ],
-  "tag": "ownership"
+  "tag": "ownership",
+  "split": "test"
  },
  {
   "q": "Logins are slow because the session store keeps evicting keys, what do I do?",
@@ -89,7 +99,8 @@
    "rb-auth-gateway",
    "svc-auth-gateway"
   ],
-  "tag": "runbook"
+  "tag": "runbook",
+  "split": "dev"
  },
  {
   "q": "How do I fail over the database when the primary is unreachable?",
@@ -97,7 +108,8 @@
   "expect": [
    "rb-database-failover"
   ],
-  "tag": "runbook"
+  "tag": "runbook",
+  "split": "test"
  },
  {
   "q": "When do TLS certificates get rotated?",
@@ -105,7 +117,8 @@
   "expect": [
    "rb-certificate-rotation"
   ],
-  "tag": "runbook"
+  "tag": "runbook",
+  "split": "dev"
  },
  {
   "q": "Why did we stop running our own message broker for async jobs?",
@@ -113,7 +126,8 @@
   "expect": [
    "adr-0006-managed-streaming"
   ],
-  "tag": "superseded"
+  "tag": "superseded",
+  "split": "test"
  },
  {
   "q": "How are our public APIs versioned?",
@@ -121,7 +135,8 @@
   "expect": [
    "adr-0003-api-versioning"
   ],
-  "tag": "adr"
+  "tag": "adr",
+  "split": "dev"
  },
  {
   "q": "Why is Postgres the default datastore?",
@@ -129,7 +144,8 @@
   "expect": [
    "adr-0001-postgres"
   ],
-  "tag": "adr"
+  "tag": "adr",
+  "split": "test"
  },
  {
   "q": "Can I ship a change to a tier-1 service on a Friday?",
@@ -137,7 +153,8 @@
   "expect": [
    "hb-engineering-handbook"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "dev"
  },
  {
   "q": "How many approving reviews does a change to a critical service need?",
@@ -145,7 +162,8 @@
   "expect": [
    "hb-engineering-handbook"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "test"
  },
  {
   "q": "What happens to the office in late December?",
@@ -153,7 +171,8 @@
   "expect": [
    "hb-holidays"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "dev"
  },
  {
   "q": "What should I do during my first week at the company?",
@@ -161,7 +180,8 @@
   "expect": [
    "hb-onboarding"
   ],
-  "tag": "policy"
+  "tag": "policy",
+  "split": "test"
  },
  {
   "q": "I lost my work laptop, what should I do?",
@@ -169,7 +189,8 @@
   "expect": [
    "hb-security-awareness"
   ],
-  "tag": "paraphrase"
+  "tag": "paraphrase",
+  "split": "dev"
  },
  {
   "q": "How big is the monitor stipend and how often can I claim it?",
@@ -177,7 +198,8 @@
   "expect": [
    "hb-remote-work"
   ],
-  "tag": "policy"
+  "tag": "policy",
+  "split": "test"
  },
  {
   "q": "Invoice generation is stalling, what is the likely cause?",
@@ -186,7 +208,8 @@
    "rb-billing-api",
    "svc-billing-api"
   ],
-  "tag": "runbook"
+  "tag": "runbook",
+  "split": "dev"
  },
  {
   "q": "Customers are getting duplicate emails after workers restart",
@@ -195,7 +218,8 @@
    "rb-notification-svc",
    "svc-notification-svc"
   ],
-  "tag": "runbook"
+  "tag": "runbook",
+  "split": "test"
  },
  {
   "q": "How do I reserve the staging environment?",
@@ -203,7 +227,8 @@
   "expect": [
    "hb-staging-guide"
   ],
-  "tag": "stale"
+  "tag": "stale",
+  "split": "dev"
  },
  {
   "q": "What is the salary band for a level 4 engineer?",
@@ -211,7 +236,8 @@
   "expect": [
    "hr-compensation-bands"
   ],
-  "tag": "restricted-allowed"
+  "tag": "restricted-allowed",
+  "split": "test"
  },
  {
   "q": "What is the salary band for a level 4 engineer?",
@@ -220,7 +246,8 @@
   "forbid": [
    "hr-compensation-bands"
   ],
-  "tag": "restricted-denied"
+  "tag": "restricted-denied",
+  "split": "dev"
  },
  {
   "q": "What were the penetration test findings this year?",
@@ -228,7 +255,8 @@
   "expect": [
    "sec-pentest-findings"
   ],
-  "tag": "restricted-allowed"
+  "tag": "restricted-allowed",
+  "split": "test"
  },
  {
   "q": "What were the penetration test findings this year?",
@@ -237,7 +265,8 @@
   "forbid": [
    "sec-pentest-findings"
   ],
-  "tag": "restricted-denied"
+  "tag": "restricted-denied",
+  "split": "dev"
  },
  {
   "q": "At what risk score are card payments held for manual review?",
@@ -245,7 +274,8 @@
   "expect": [
    "pay-fraud-rules"
   ],
-  "tag": "restricted-allowed"
+  "tag": "restricted-allowed",
+  "split": "test"
  },
  {
   "q": "At what risk score are card payments held for manual review?",
@@ -254,7 +284,8 @@
   "forbid": [
    "pay-fraud-rules"
   ],
-  "tag": "restricted-denied"
+  "tag": "restricted-denied",
+  "split": "dev"
  },
  {
   "q": "How much runway does the company have?",
@@ -263,7 +294,8 @@
   "forbid": [
    "fin-board-financials-q3"
   ],
-  "tag": "restricted-denied"
+  "tag": "restricted-denied",
+  "split": "test"
  },
  {
   "q": "How was the leaked credential in a build log handled?",
@@ -271,7 +303,8 @@
   "expect": [
    "sec-postmortem-leaked-credential"
   ],
-  "tag": "restricted-allowed"
+  "tag": "restricted-allowed",
+  "split": "dev"
  },
  {
   "q": "Month-end report exports are timing out",
@@ -280,7 +313,8 @@
    "rb-report-exporter",
    "svc-report-exporter"
   ],
-  "tag": "runbook"
+  "tag": "runbook",
+  "split": "test"
  },
  {
   "q": "Am I allowed to expense a business class plane ticket?",
@@ -288,7 +322,8 @@
   "expect": [
    "hb-expenses"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "dev"
  },
  {
   "q": "Someone stole my phone, who needs to know and how quickly?",
@@ -296,7 +331,8 @@
   "expect": [
    "hb-security-awareness"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "test"
  },
  {
   "q": "How many weeks a year can I be based overseas?",
@@ -304,7 +340,8 @@
   "expect": [
    "hb-remote-work"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "dev"
  },
  {
   "q": "The site keeps serving an old bundle after we released",
@@ -313,7 +350,8 @@
    "rb-web-frontend",
    "svc-web-frontend"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "test"
  },
  {
   "q": "What happens to a card payment that looks risky?",
@@ -321,7 +359,8 @@
   "expect": [
    "pay-fraud-rules"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "dev"
  },
  {
   "q": "How fast does security respond to a report of a suspicious email?",
@@ -329,7 +368,8 @@
   "expect": [
    "hb-security-awareness"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "test"
  },
  {
   "q": "Do we get time back after carrying the pager for a week?",
@@ -337,7 +377,8 @@
   "expect": [
    "hb-oncall-policy"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "dev"
  },
  {
   "q": "Is it OK to pay a hotel 200 a night?",
@@ -346,6 +387,278 @@
    "hb-expenses",
    "hb-expenses-travel-2023"
   ],
-  "tag": "hard-paraphrase"
+  "tag": "hard-paraphrase",
+  "split": "test"
+ },
+ {
+  "q": "Why did login latency spike in July and what fixed it?",
+  "role": "employee",
+  "expect": [
+   "tkt-plat-212"
+  ],
+  "tag": "ticket",
+  "split": "dev"
+ },
+ {
+  "q": "What was done about the search index falling behind after a bad document?",
+  "role": "employee",
+  "expect": [
+   "tkt-data-301",
+   "rb-search-indexer"
+  ],
+  "tag": "ticket",
+  "split": "test"
+ },
+ {
+  "q": "Is the old VPN really gone?",
+  "role": "employee",
+  "expect": [
+   "chat-platform-help-t2",
+   "hb-vpn-2025"
+  ],
+  "tag": "chat",
+  "split": "dev"
+ },
+ {
+  "q": "Can I ship a config change on a Friday afternoon?",
+  "role": "employee",
+  "expect": [
+   "chat-platform-help-t3",
+   "hb-engineering-handbook"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "Customers got two copies of the same email after a worker restart, what is the workaround?",
+  "role": "employee",
+  "expect": [
+   "chat-growth-eng-t1",
+   "rb-notification-svc",
+   "svc-notification-svc"
+  ],
+  "tag": "chat",
+  "split": "dev"
+ },
+ {
+  "q": "Who do I page for the notification service now that the handoff happened?",
+  "role": "employee",
+  "expect": [
+   "chat-growth-eng-t2",
+   "ownership-services"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "Do I really have to hand in expense receipts within two weeks now?",
+  "role": "employee",
+  "expect": [
+   "chat-random-t1",
+   "hb-expenses"
+  ],
+  "tag": "chat",
+  "split": "dev"
+ },
+ {
+  "q": "How do I order a second screen for my desk?",
+  "role": "employee",
+  "expect": [
+   "chat-random-t2"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "What happens if chargeback reconciliation takes longer than the window?",
+  "role": "payments",
+  "expect": [
+   "chat-payments-eng-t1"
+  ],
+  "tag": "chat",
+  "split": "dev"
+ },
+ {
+  "q": "Why did the ledger record one payment twice?",
+  "role": "payments",
+  "expect": [
+   "tkt-pay-77",
+   "rb-payments-ledger"
+  ],
+  "tag": "ticket",
+  "split": "test"
+ },
+ {
+  "q": "Why did the ledger record one payment twice?",
+  "role": "employee",
+  "expect": [],
+  "tag": "restricted-denied",
+  "forbid": [
+   "tkt-pay-77"
+  ],
+  "split": "dev"
+ },
+ {
+  "q": "What happens if chargeback reconciliation takes longer than the window?",
+  "role": "growth",
+  "expect": [],
+  "tag": "restricted-denied",
+  "forbid": [
+   "chat-payments-eng-t1"
+  ],
+  "split": "test"
+ },
+ {
+  "q": "Does paid time off keep accruing during parental leave?",
+  "role": "hr",
+  "expect": [
+   "tkt-hr-9",
+   "hb-pto"
+  ],
+  "tag": "ticket",
+  "split": "dev"
+ },
+ {
+  "q": "What sign-off does an offer above the top of the pay band need?",
+  "role": "hr",
+  "expect": [
+   "chat-people-ops-t1",
+   "hr-compensation-bands"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "What sign-off does an offer above the top of the pay band need?",
+  "role": "employee",
+  "expect": [],
+  "tag": "restricted-denied",
+  "forbid": [
+   "chat-people-ops-t1",
+   "hr-compensation-bands"
+  ],
+  "split": "dev"
+ },
+ {
+  "q": "Was the leaked credential rotated again?",
+  "role": "security",
+  "expect": [
+   "chat-security-private-t1",
+   "sec-postmortem-leaked-credential"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "Was the leaked credential rotated again?",
+  "role": "employee",
+  "expect": [],
+  "tag": "restricted-denied",
+  "forbid": [
+   "chat-security-private-t1",
+   "sec-postmortem-leaked-credential"
+  ],
+  "split": "dev"
+ },
+ {
+  "q": "Why were the edge certificates renewed late?",
+  "role": "employee",
+  "expect": [
+   "tkt-plat-230"
+  ],
+  "tag": "ticket",
+  "split": "test"
+ },
+ {
+  "q": "The staging reset fails while the data refresh is still running",
+  "role": "employee",
+  "expect": [
+   "tkt-plat-244",
+   "hb-staging-guide"
+  ],
+  "tag": "ticket",
+  "split": "dev"
+ },
+ {
+  "q": "When does the staging environment get wiped?",
+  "role": "employee",
+  "expect": [
+   "hb-staging-guide",
+   "chat-platform-help-t5"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "Why did the nightly warehouse load finish late in September?",
+  "role": "employee",
+  "expect": [
+   "tkt-data-315",
+   "rb-data-pipeline"
+  ],
+  "tag": "ticket",
+  "split": "dev"
+ },
+ {
+  "q": "Do remote access sessions drop after a workday?",
+  "role": "employee",
+  "expect": [
+   "tkt-plat-176",
+   "hb-vpn-2025"
+  ],
+  "tag": "ticket",
+  "split": "test"
+ },
+ {
+  "q": "Is there a size limit on chargeback evidence uploads?",
+  "role": "payments",
+  "expect": [
+   "tkt-pay-81"
+  ],
+  "tag": "ticket",
+  "split": "dev"
+ },
+ {
+  "q": "How long does the primary on-call have to acknowledge before the page moves on, according to the latest discussion?",
+  "role": "employee",
+  "expect": [
+   "chat-platform-help-t1",
+   "hb-oncall-policy",
+   "rb-incident-response"
+  ],
+  "tag": "chat",
+  "split": "test"
+ },
+ {
+  "q": "Which days do certificates get renewed ahead of expiry?",
+  "role": "employee",
+  "expect": [
+   "rb-certificate-rotation",
+   "tkt-plat-230",
+   "chat-platform-help-t4"
+  ],
+  "tag": "conflict",
+  "split": "dev"
+ },
+ {
+  "q": "Where does the incident commander post updates?",
+  "role": "employee",
+  "expect": [
+   "rb-incident-response"
+  ],
+  "tag": "runbook",
+  "split": "test"
+ },
+ {
+  "q": "How are backups retained?",
+  "role": "employee",
+  "expect": [
+   "svc-billing-api",
+   "svc-payments-ledger",
+   "svc-auth-gateway",
+   "svc-notification-svc"
+  ],
+  "tag": "runbook",
+  "split": "dev"
  }
 ]

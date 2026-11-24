@@ -32,22 +32,27 @@ export function termFreq(terms: string[]): Record<string, number> {
 // embedding. This is the "semantic" part of the hybrid and is intentionally tiny and inspectable.
 const CONCEPTS: string[][] = [
   ['incident', 'outage', 'down', 'sev', 'pager', 'page', 'paged', 'alert', 'emergency'],
-  ['oncall', 'rotation', 'primary', 'secondary', 'acknowledge', 'escalate', 'escalation', 'unacknowledged'],
-  ['timeoff', 'pto', 'vacation', 'leave', 'holiday', 'absence', 'closure', 'floating'],
+  ['oncall', 'pager', 'carrying', 'rotation', 'primary', 'secondary', 'acknowledge', 'escalate', 'escalation', 'unacknowledged'],
+  ['timeoff', 'pto', 'vacation', 'leave', 'holiday', 'absence', 'closure', 'floating', 'recovery', 'compensatory'],
   ['pay', 'salary', 'compensation', 'band', 'offer', 'wage'],
   ['expense', 'reimburse', 'receipt', 'travel', 'hotel', 'flight', 'meal', 'spend'],
   ['access', 'vpn', 'proxy', 'zero', 'trust', 'dashboard', 'session', 'login'],
-  ['equipment', 'laptop', 'monitor', 'device', 'stipend'],
+  ['equipment', 'laptop', 'monitor', 'screen', 'display', 'device', 'stipend'],
   ['queue', 'broker', 'streaming', 'async', 'job', 'consumer', 'dead', 'letter'],
   ['deploy', 'release', 'ship', 'rollout', 'rollback', 'friday'],
   ['owner', 'own', 'responsible', 'maintain', 'steward', 'team'],
-  ['security', 'phishing', 'mfa', 'multi', 'factor', 'credential', 'leak', 'breach', 'pentest', 'vulnerability'],
+  ['security', 'lost', 'stolen', 'phishing', 'mfa', 'multi', 'factor', 'credential', 'leak', 'breach', 'pentest', 'vulnerability'],
   ['database', 'postgres', 'db', 'failover', 'replica', 'replication', 'datastore'],
   ['certificate', 'tls', 'ssl', 'cert', 'expiry'],
   ['review', 'approve', 'approval', 'reviewer'],
   ['onboarding', 'newcomer', 'joiner', 'first', 'week', 'buddy'],
   ['fraud', 'risk', 'decline', 'chargeback'],
-  ['remote', 'wfh', 'home', 'abroad', 'country'],
+  ['remote', 'wfh', 'home', 'abroad', 'overseas', 'foreign', 'country'],
+  ['lost', 'stolen', 'theft', 'missing', 'misplaced'],
+  ['duplicate', 'twice', 'double', 'resend', 'copies', 'copy'],
+  ['late', 'lag', 'delay', 'behind', 'slow', 'spike', 'latency'],
+  ['fix', 'resolve', 'workaround', 'mitigation', 'patch', 'cause'],
+  ['wipe', 'reset', 'refresh', 'purge'],
 ].map(g => g.map(stem));
 const CONCEPT_OF = new Map<string, number[]>();
 CONCEPTS.forEach((g, i) => g.forEach(w => CONCEPT_OF.set(w, [...(CONCEPT_OF.get(w) ?? []), i])));

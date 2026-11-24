@@ -1,0 +1,3 @@
+{"channel":"#security-private","restricted_to":["security"]}
+{"ts":"2026-10-19T10:00:00Z","user":"kofi","thread":"t1","text":"The leaked credential from the postmortem was rotated again today. Keep the details inside this channel."}
+{"ts":"2026-10-19T10:05:00Z","user":"ayo","thread":"t1","text":"Understood. I will also rotate the staging variant within 24 hours."}

@@ -1,0 +1,48 @@
+{
+  "project": "PAY",
+  "acl": [
+    "payments"
+  ],
+  "tickets": [
+    {
+      "key": "PAY-77",
+      "title": "Idempotency key lost on retried ledger write",
+      "status": "resolved",
+      "updated": "2026-09-02",
+      "reporter": "jonas",
+      "assignee": "mei",
+      "description": "A retried write to payments-ledger posted twice because the retry path dropped the idempotency key.",
+      "comments": [
+        {
+          "author": "mei",
+          "ts": "2026-09-01T12:00:00Z",
+          "text": "Fixed: the key is now part of the retry envelope. Added a reconciliation check that flags duplicates within 24 hours."
+        }
+      ]
+    },
+    {
+      "key": "PAY-81",
+      "title": "Chargeback evidence upload fails for large files",
+      "status": "open",
+      "updated": "2026-10-14",
+      "reporter": "ana",
+      "assignee": "mei",
+      "description": "Uploads over 20 MB time out in the chargeback evidence form. Support has to email documents instead.",
+      "comments": []
+    },
+    {
+      "key": "PAY-90",
+      "title": "Review fraud hold threshold",
+      "status": "open",
+      "updated": "2026-10-27",
+      "reporter": "jonas",
+      "assignee": "jonas",
+      "restricted_to": [
+        "payments",
+        "security"
+      ],
+      "description": "Proposal to lower the manual review score threshold after last quarter card-testing attempts. Details are restricted to payments and security.",
+      "comments": []
+    }
+  ]
+}

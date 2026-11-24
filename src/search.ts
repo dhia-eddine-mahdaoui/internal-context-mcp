@@ -1,7 +1,7 @@
 import { ContextIndex } from './index.js';
 import { ageDays, canRead, freshness } from './policy.js';
 import { analyze, cosine, embed } from './text.js';
-import { Chunk, DocMeta, DocType, Freshness, Role } from './types.js';
+import { Chunk, DocMeta, DocType, Freshness, Role, SourceKind } from './types.js';
 
 export type Mode = 'hybrid' | 'bm25' | 'embedding';
 
@@ -16,7 +16,18 @@ export interface Hit {
   age_days: number;
 }
 
+/** Ranking knobs. Defaults are what the server uses; the eval harness varies them on the dev split only. */
+export interface Tuning {
+  bm25Weight: number;
+  /** 'minmax' scales each signal by its best value among this caller's candidates before blending, so neither signal dominates by scale. */
+  fusion: 'linear' | 'minmax';
+  /** Multiplier by source connector: informal chat and tickets rank below authored pages when relevance is similar. */
+  sourcePrior: Partial<Record<SourceKind, number>>;
+}
+export const DEFAULT_TUNING: Tuning = { bm25Weight: 0.55, fusion: 'linear', sourcePrior: { chat: 0.7, ticket: 0.85 } };
+
 export interface SearchOptions {
+  tuning?: Partial<Tuning>;
   role: Role;
   mode?: Mode;
   includeSuperseded?: boolean;
@@ -32,6 +43,7 @@ const FRESH_FACTOR = { fresh: 1, aging: 0.97, stale: 0.92 } as const;
 /** Permission filtering happens BEFORE scoring: restricted chunks never enter ranking for a caller without access. */
 export function searchChunks(index: ContextIndex, query: string, opts: SearchOptions): Hit[] {
   const mode = opts.mode ?? 'hybrid';
+  const tune: Tuning = { ...DEFAULT_TUNING, ...opts.tuning };
   const qTerms = [...new Set(analyze(query))];
   if (qTerms.length === 0) return [];
   const N = index.chunks.length;
@@ -54,13 +66,20 @@ export function searchChunks(index: ContextIndex, query: string, opts: SearchOpt
       }
       const bm25 = raw / maxBm25;
       const cos = Math.max(0, cosine(chunk.vec, qVec));
-      const relevance = mode === 'bm25' ? bm25 : mode === 'embedding' ? cos : BM25_WEIGHT * bm25 + (1 - BM25_WEIGHT) * cos;
+      const relevance = mode === 'bm25' ? bm25 : mode === 'embedding' ? cos : tune.bm25Weight * bm25 + (1 - tune.bm25Weight) * cos;
       if (relevance <= 0) continue;
       hits.push({
         chunk, meta, bm25, cosine: cos, relevance,
-        score: relevance * STATUS_FACTOR[meta.status] * FRESH_FACTOR[fresh],
+        score: relevance * STATUS_FACTOR[meta.status] * FRESH_FACTOR[fresh] * (tune.sourcePrior[meta.source ?? 'markdown'] ?? 1),
         freshness: fresh, age_days: ageDays(meta.updated, opts.now),
       });
+    }
+  }
+  if (mode === 'hybrid' && tune.fusion === 'minmax' && hits.length) {
+    const mb = Math.max(...hits.map(h => h.bm25)) || 1, mc = Math.max(...hits.map(h => h.cosine)) || 1;
+    for (const h of hits) {
+      const fused = tune.bm25Weight * (h.bm25 / mb) + (1 - tune.bm25Weight) * (h.cosine / mc);
+      h.score = fused * STATUS_FACTOR[h.meta.status] * FRESH_FACTOR[h.freshness] * (tune.sourcePrior[h.meta.source ?? 'markdown'] ?? 1);
     }
   }
   return hits.sort((a, b) => b.score - a.score || a.chunk.docId.localeCompare(b.chunk.docId));

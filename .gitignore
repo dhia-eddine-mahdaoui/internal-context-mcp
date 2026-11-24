@@ -4,3 +4,6 @@ dist/
 *.log
 .env
 .env.*
+identities*.json
+*.local.json
+docs/.tmp/

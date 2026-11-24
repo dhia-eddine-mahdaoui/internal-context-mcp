@@ -1,6 +1,7 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { Context, callTool, listTools } from './tools.js';
+import { Caller } from './identity.js';
 import { ToolError } from './types.js';
 
 export function errorPayload(e: unknown) {
@@ -9,7 +10,7 @@ export function errorPayload(e: unknown) {
 }
 
 /** Low-level MCP server: tool schemas are plain JSON Schema and every call passes through the same strict validator as the HTTP endpoint. */
-export function createMcpServer(ctx: Context): Server {
+export function createMcpServer(ctx: Context, caller?: Caller): Server {
   const server = new Server(
     { name: 'internal-context-mcp', version: '0.1.0' },
     {
@@ -20,7 +21,7 @@ export function createMcpServer(ctx: Context): Server {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: listTools() }));
   server.setRequestHandler(CallToolRequestSchema, async request => {
     try {
-      const result = callTool(ctx, request.params.name, request.params.arguments);
+      const result = callTool(ctx, request.params.name, request.params.arguments, caller);
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
     } catch (e) {
       return { content: [{ type: 'text', text: JSON.stringify(errorPayload(e), null, 2) }], isError: true };

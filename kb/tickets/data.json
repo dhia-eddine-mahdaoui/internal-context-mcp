@@ -1,0 +1,37 @@
+{
+  "project": "DATA",
+  "tickets": [
+    {
+      "key": "DATA-301",
+      "title": "Search index lag after a malformed document",
+      "status": "resolved",
+      "updated": "2026-08-05",
+      "reporter": "tomas",
+      "assignee": "ines",
+      "description": "The search-indexer fell behind by several hours after one malformed document blocked a batch.",
+      "comments": [
+        {
+          "author": "ines",
+          "ts": "2026-08-05T09:00:00Z",
+          "text": "The indexer now quarantines a document that fails parsing twice and continues with the batch. Alert fires when index lag exceeds 20 minutes."
+        }
+      ]
+    },
+    {
+      "key": "DATA-315",
+      "title": "Warehouse load missed its window",
+      "status": "resolved",
+      "updated": "2026-09-18",
+      "reporter": "ines",
+      "assignee": "tomas",
+      "description": "The nightly load finished late because an upstream export arrived after midnight.",
+      "comments": [
+        {
+          "author": "tomas",
+          "ts": "2026-09-18T07:30:00Z",
+          "text": "Load now waits for the export manifest instead of a fixed start time."
+        }
+      ]
+    }
+  ]
+}

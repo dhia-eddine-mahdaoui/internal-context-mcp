@@ -6,6 +6,7 @@ import { Hit, searchChunks, snippet, topDocs } from './search.js';
 import { Schema, validate } from './validate.js';
 import { DOC_TYPES, Role, ROLES, ToolError } from './types.js';
 import { splitSections } from './frontmatter.js';
+import { Caller } from './identity.js';
 
 export interface Context {
   index: ContextIndex;
@@ -28,7 +29,7 @@ export function createContext(index: ContextIndex, opts: Partial<Pick<Context, '
   };
 }
 
-const roleProp: Schema = { type: 'string', enum: ROLES, description: 'Caller role used for permission filtering. Ignored/rejected when the deployment locks the role.' };
+const roleProp: Schema = { type: 'string', enum: ROLES, description: 'Caller role used for permission filtering. Only honoured for an unauthenticated local caller; rejected if it differs from the role of the authenticated identity.' };
 const docId: Schema = { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{2,80}$', description: 'Document id, e.g. rb-billing-api' };
 
 interface Tool {
@@ -43,8 +44,13 @@ function noteConflicts(conflicts: Conflict[]) {
   return conflicts.length ? conflicts : undefined;
 }
 
-function resultDoc(h: Hit, query: string, conflictedTopics: Set<string>, ctx: Context) {
-  const conflicted = !!h.meta.topic && conflictedTopics.has(h.meta.topic);
+/** Doc ids that take part in an unresolved disagreement (shared topic or differing numeric claims). */
+function conflictedDocIds(conflicts: Conflict[]): Set<string> {
+  return new Set(conflicts.filter(c => c.kind !== 'superseded').flatMap(c => c.documents.map(d => d.doc_id)));
+}
+
+function resultDoc(h: Hit, query: string, conflictedIds: Set<string>, ctx: Context) {
+  const conflicted = conflictedIds.has(h.meta.id);
   return {
     doc_id: h.meta.id, title: h.meta.title, section: h.chunk.section, type: h.meta.type,
     snippet: snippet(h.chunk.text, query),
@@ -79,10 +85,10 @@ const tools: Tool[] = [
     handler(ctx, a, role) {
       const hits = topDocs(searchChunks(ctx.index, a.query, { role, includeSuperseded: a.include_superseded, types: a.doc_types, now: ctx.now() }).filter(h => h.relevance >= MIN_HIT), a.k ?? 5);
       const conflicts = findConflicts(ctx.index, role, hits.filter(h => h.relevance >= MIN_SOURCE).map(h => h.meta.id));
-      const topics = new Set(conflicts.filter(c => c.kind === 'active_disagreement').map(c => c.topic));
+      const inConflict = conflictedDocIds(conflicts);
       return {
         query: a.query, role,
-        results: hits.map(h => resultDoc(h, a.query, topics, ctx)),
+        results: hits.map(h => resultDoc(h, a.query, inConflict, ctx)),
         conflicts: conflicts,
         audit_doc_ids: hits.map(h => h.meta.id),
       };
@@ -176,10 +182,11 @@ const tools: Tool[] = [
       if (hits.length === 0 || hits[0].relevance < MIN_RELEVANCE) {
         return { question: a.question, role, status: 'insufficient_evidence', answer: null, sources: [], conflicts: [], warnings: ['No document the caller can read matches this question well enough to answer it. Do not guess; ask the owning team.'], audit_doc_ids: [] };
       }
-      const conflicts = findConflicts(ctx.index, role, hits.map(h => h.meta.id));
-      const active = conflicts.filter(c => c.kind === 'active_disagreement');
-      const topics = new Set(active.map(c => c.topic));
-      const sources = hits.map((h, i) => ({ ref: i + 1, ...resultDoc(h, a.question, topics, ctx) }));
+      // only sources close to the best match drive conflict detection, so a loosely related page does not raise a false alarm
+      const conflicts = findConflicts(ctx.index, role, hits.filter(h => h.relevance >= 0.6 * hits[0].relevance).map(h => h.meta.id));
+      const active = conflicts.filter(c => c.kind !== 'superseded');
+      const inConflict = conflictedDocIds(conflicts);
+      const sources = hits.map((h, i) => ({ ref: i + 1, ...resultDoc(h, a.question, inConflict, ctx) }));
       const warnings: string[] = [];
       for (const s of sources) {
         if (s.status === 'superseded') warnings.push(`[${s.ref}] ${s.doc_id} is superseded${s.superseded_by ? ` by ${s.superseded_by}` : ''}; do not rely on it.`);
@@ -241,18 +248,24 @@ export function listTools() {
 }
 
 /** Validate, authorise, run, audit. Throws ToolError for anything a caller can fix or should be told. */
-export function callTool(ctx: Context, name: string, rawArgs: unknown): unknown {
+export function callTool(ctx: Context, name: string, rawArgs: unknown, caller?: Caller): unknown {
   const tool = tools.find(t => t.name === name);
   if (!tool) throw new ToolError('UNKNOWN_TOOL', `Unknown tool "${name}". Available: ${tools.map(t => t.name).join(', ')}`);
   const args = rawArgs ?? {};
   const errors = validate(args, tool.inputSchema);
   if (errors.length) throw new ToolError('INVALID_ARGUMENTS', `Invalid arguments for ${name}:\n- ${errors.join('\n- ')}`, { errors });
   const requested = (args as { role?: Role }).role;
-  if (ctx.lockedRole && requested && requested !== ctx.lockedRole) {
-    audit(ctx, name, requested, 'denied', []);
-    throw new ToolError('PERMISSION_DENIED', `This server is bound to role "${ctx.lockedRole}"; the role argument cannot be overridden.`);
+  // Identity comes from the transport (verified bearer credential over HTTP, configured identity over stdio);
+  // a `role` argument may only repeat the caller's own role, never widen it.
+  const bound: { id: string; role: Role } | undefined = caller ?? (ctx.lockedRole ? { id: 'locked-role', role: ctx.lockedRole } : undefined);
+  if (bound && requested && requested !== bound.role) {
+    audit(ctx, name, requested, 'denied', [], bound.id);
+    throw new ToolError('PERMISSION_DENIED', caller
+      ? `This caller is mapped to role "${bound.role}"; the role argument cannot override it.`
+      : `This server is bound to role "${bound.role}"; the role argument cannot be overridden.`);
   }
-  const role = ctx.lockedRole ?? requested ?? ctx.defaultRole;
+  const role = bound?.role ?? requested ?? ctx.defaultRole;
+  const callerId = bound?.id ?? 'anonymous';
   if (name !== 'reindex' && Date.now() - ctx.lastScan >= ctx.refreshMs) {
     ctx.index.reindex();
     ctx.lastScan = Date.now();
@@ -260,18 +273,18 @@ export function callTool(ctx: Context, name: string, rawArgs: unknown): unknown 
   try {
     const result = tool.handler(ctx, args, role) as { audit_doc_ids?: string[] };
     const ids = result.audit_doc_ids ?? [];
-    audit(ctx, name, role, 'ok', ids);
+    audit(ctx, name, role, 'ok', ids, callerId);
     // audit ids are for the audit log; callers do not need them
     const { audit_doc_ids: _drop, ...rest } = result as Record<string, unknown>;
     return rest;
   } catch (e) {
-    audit(ctx, name, role, e instanceof ToolError ? e.code : 'error', []);
+    audit(ctx, name, role, e instanceof ToolError ? e.code : 'error', [], callerId);
     throw e;
   }
 }
 
-function audit(ctx: Context, tool: string, role: string, outcome: string, docIds: string[]) {
+function audit(ctx: Context, tool: string, role: string, outcome: string, docIds: string[], caller = 'anonymous') {
   if (!ctx.auditLog) return;
-  // Queries are deliberately not logged (they can contain sensitive text); only who/what/outcome and which docs were served.
-  appendFileSync(ctx.auditLog, JSON.stringify({ ts: new Date().toISOString(), tool, role, outcome, doc_ids: docIds }) + '\n');
+  // Queries are deliberately not logged (they can contain sensitive text); only who (caller id and role)/what/outcome and which docs were served.
+  appendFileSync(ctx.auditLog, JSON.stringify({ ts: new Date().toISOString(), caller, tool, role, outcome, doc_ids: docIds }) + '\n');
 }

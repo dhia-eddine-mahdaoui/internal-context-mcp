@@ -1,0 +1,12 @@
+{"channel":"#platform-help"}
+{"ts":"2026-10-28T09:12:00Z","user":"dana","thread":"t1","text":"Quick one: how long do we wait before an unacknowledged page goes to the secondary?"}
+{"ts":"2026-10-28T09:15:00Z","user":"amira","thread":"t1","text":"We agreed in the platform sync to tighten it. The primary now has 20 minutes to acknowledge, then the page goes to the secondary. The handbook has not caught up yet."}
+{"ts":"2026-10-28T09:16:00Z","user":"dana","thread":"t1","text":"Thanks, I will follow that until the policy page is updated."}
+{"ts":"2026-09-03T14:02:00Z","user":"ravi","thread":"t2","text":"Is the old VPN really gone? My client still shows it."}
+{"ts":"2026-09-03T14:05:00Z","user":"amira","thread":"t2","text":"Yes. Use the access proxy with the device-posture check. The VPN profile is being removed from laptops this month."}
+{"ts":"2026-10-12T16:30:00Z","user":"noor","thread":"t3","text":"Can I ship the config change on Friday afternoon? It is tiny."}
+{"ts":"2026-10-12T16:34:00Z","user":"ravi","thread":"t3","text":"Please do not. We avoid Friday deploys, and the on-call has to babysit anything that goes out. Ship Monday morning."}
+{"ts":"2026-10-09T10:00:00Z","user":"sofia","thread":"t4","text":"Do certificate renewals really still happen 30 days out? PLAT-230 says 21."}
+{"ts":"2026-10-09T10:07:00Z","user":"amira","thread":"t4","text":"The automation is still on the old window until the change lands. Treat the ticket as the plan and the runbook as what runs today."}
+{"ts":"2025-02-11T11:00:00Z","user":"dana","thread":"t5","text":"Staging reset happens every Sunday night, so push your test data before then."}
+{"ts":"2025-02-11T11:20:00Z","user":"ravi","thread":"t5","text":"Confirmed."}

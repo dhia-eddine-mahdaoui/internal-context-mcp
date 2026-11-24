@@ -1,0 +1,24 @@
+{
+  "project": "HR",
+  "acl": [
+    "hr"
+  ],
+  "tickets": [
+    {
+      "key": "HR-9",
+      "title": "Clarify parental leave accrual",
+      "status": "resolved",
+      "updated": "2026-05-30",
+      "reporter": "marta",
+      "assignee": "marta",
+      "description": "Employees asked whether paid time off keeps accruing during parental leave.",
+      "comments": [
+        {
+          "author": "marta",
+          "ts": "2026-05-30T13:00:00Z",
+          "text": "It does. Policy text updated; managers were told in the people-ops sync."
+        }
+      ]
+    }
+  ]
+}
